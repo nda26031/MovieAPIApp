@@ -27,6 +27,7 @@
                 android:id="@+id/imgMovie"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="image Movie"
                 android:scaleType="centerCrop"
                 android:src="@drawable/city" />
         </androidx.cardview.widget.CardView>

@@ -11,27 +11,28 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieapiapp.R
+import com.example.movieapiapp.databinding.ItemMovieBinding
 
 class PopularMovieAdapter() :
     ListAdapter<PopularMovie, PopularMovieAdapter.PopularMovieViewHolder>(PopularMovieDiffUtil()) {
-    class PopularMovieViewHolder(item: View) : RecyclerView.ViewHolder(item) {
-        val imgMovie: ImageView = item.findViewById(R.id.imgMovie)
-        val tvName: TextView = item.findViewById(R.id.tvNameMovie)
+    class PopularMovieViewHolder(val binding: ItemMovieBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMovieViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+        val view = ItemMovieBinding.inflate(LayoutInflater.from(parent.context))
         return PopularMovieViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PopularMovieViewHolder, position: Int) {
         val currentItem = currentList[position]
         holder.apply {
-            tvName.text = currentItem.title
-            Glide.with(itemView.context)
+            binding.tvNameMovie.text = currentItem.title
+            Glide.with(holder.itemView)
                 .load("https://image.tmdb.org/t/p/w500${currentItem.posterPath}")
                 .centerCrop()
-                .into(imgMovie)
+                .into(holder.binding.imgMovie)
         }
     }
 

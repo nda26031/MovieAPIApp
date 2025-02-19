@@ -10,24 +10,33 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class TopRatedMovieViewModel : ViewModel() {
-    private var movieLiveData = MutableLiveData<List<TopRatedMovie>>()
+    private var _topRatedMovie = MutableLiveData<List<TopRatedMovie>>()
+    val topRatedMovie: LiveData<List<TopRatedMovie>> = _topRatedMovie
+
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
+
     fun getPopularMovies() {
-        RetrofitInstance.api.getTopRateMovieList("69d66957eebff9666ea46bd464773cf0").enqueue(object  :
-            Callback<TopRatedMovieState> {
-            override fun onResponse(call: Call<TopRatedMovieState>, response: Response<TopRatedMovieState>) {
-                if (response.body()!=null){
-                    movieLiveData.value = response.body()!!.results
+        _loading.value = true
+
+        RetrofitInstance.api.getTopRateMovieList("69d66957eebff9666ea46bd464773cf0")
+            .enqueue(object :
+                Callback<TopRatedMovieState> {
+                override fun onResponse(
+                    call: Call<TopRatedMovieState>,
+                    response: Response<TopRatedMovieState>
+                ) {
+                    if (response.body() != null) {
+                        _topRatedMovie.value = response.body()!!.results
+                        _loading.value = false
+
+                    }
                 }
-                else{
-                    return
+
+                override fun onFailure(call: Call<TopRatedMovieState>, t: Throwable) {
+                    Log.d("TAG", t.message.toString())
                 }
-            }
-            override fun onFailure(call: Call<TopRatedMovieState>, t: Throwable) {
-                Log.d("TAG",t.message.toString())
-            }
-        })
+            })
     }
-    fun observeMovieLiveData() : LiveData<List<TopRatedMovie>> {
-        return movieLiveData
-    }
+
 }

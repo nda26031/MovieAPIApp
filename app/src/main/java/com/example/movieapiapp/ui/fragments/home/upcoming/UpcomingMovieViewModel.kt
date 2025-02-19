@@ -12,10 +12,13 @@ import retrofit2.Response
 
 class UpcomingMovieViewModel : ViewModel() {
     private val _upcomingMovie = MutableLiveData<List<UpcomingMovie>>()
-
     val upcomingMovie : LiveData<List<UpcomingMovie>> = _upcomingMovie
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading : LiveData<Boolean> = _loading
+
     fun getUpcomingMovieList() {
+        _loading.value = true
         RetrofitInstance.api.getUpcomingMovieList("ccea8d7b622a323de74dbfad8ec0a374")
             .enqueue(object : Callback<UpcomingMovieState> {
                 override fun onResponse(
@@ -25,6 +28,7 @@ class UpcomingMovieViewModel : ViewModel() {
                     Log.d("viewModel", "onResponse: ${response.body()}")
                     if (response.body() != null) {
                         _upcomingMovie.value = response.body()?.results
+                        _loading.value = false
                     }
                 }
 

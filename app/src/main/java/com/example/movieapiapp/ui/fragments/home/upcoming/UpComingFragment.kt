@@ -31,6 +31,10 @@ class UpComingFragment : Fragment() {
 
         prepareRecyclerView()
 
+        upcomingMovieViewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            showLoadingProgressBar(isLoading)
+        }
+
         upcomingMovieViewModel.getUpcomingMovieList()
         upcomingMovieViewModel.upcomingMovie
             .observe(viewLifecycleOwner) { upcomingMovieList ->
@@ -47,7 +51,9 @@ class UpComingFragment : Fragment() {
         }
     }
 
-
+    private fun showLoadingProgressBar(isLoading: Boolean) {
+        binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
 
 
 }

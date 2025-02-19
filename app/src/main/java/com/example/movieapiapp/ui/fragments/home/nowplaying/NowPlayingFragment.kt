@@ -6,53 +6,57 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapiapp.R
-import com.example.movieapiapp.ui.data.network.RetrofitInstance
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.movieapiapp.databinding.FragmentNowPlayingBinding
+import com.example.movieapiapp.databinding.FragmentUpComingBinding
+import com.example.movieapiapp.ui.fragments.home.upcoming.UpcomingMovieAdapter
 
 class NowPlayingFragment : Fragment() {
 
-    private val retrofitInstance = RetrofitInstance.api
-    private val nowPlayingMovieAdapter = NowPlayingMovieAdapter()
+    private lateinit var binding: FragmentNowPlayingBinding
+    private val nowPlayingMovieViewModel: NowPlayingMovieViewModel by viewModels()
+    private var nowPlayingMovieAdapter = NowPlayingMovieAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_now_playing, container, false)
+        binding = FragmentNowPlayingBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.rcvNowPlaying)
-        recyclerView.adapter = nowPlayingMovieAdapter
-        recyclerView.layoutManager = GridLayoutManager(context, 2)
-        retrofitInstance.getPlayingMovieList("ccea8d7b622a323de74dbfad8ec0a374")
-            .enqueue(object : Callback<NowPlayingMovieState> {
-                override fun onResponse(
-                    call: Call<NowPlayingMovieState>,
-                    response: Response<NowPlayingMovieState>
-                ) {
-                    if (response.isSuccessful) {
-                        nowPlayingMovieAdapter.submitList(response.body()?.results)
-                        recyclerView.adapter = nowPlayingMovieAdapter
-                    }
-                }
+        prepareRecyclerView()
 
-                override fun onFailure(call: Call<NowPlayingMovieState>, t: Throwable) {
-                    Log.d("TAG", t.message.toString())
+        nowPlayingMovieViewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            showLoadingProgressBar(isLoading)
+        }
 
-                }
+        nowPlayingMovieViewModel.getNowPlayingMovieList()
+        nowPlayingMovieViewModel.nowPlayingMovie
+            .observe(viewLifecycleOwner) { upcomingMovieList ->
+                nowPlayingMovieAdapter.submitList(upcomingMovieList)
+                binding.rcvNowPlaying.adapter = nowPlayingMovieAdapter
+            }
 
+    }
 
-            })
+    private fun prepareRecyclerView() {
+        nowPlayingMovieAdapter = NowPlayingMovieAdapter()
+        binding.rcvNowPlaying.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = nowPlayingMovieAdapter
+        }
+    }
 
+    private fun showLoadingProgressBar(isLoading: Boolean) {
+        binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
 }

@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieapiapp.databinding.ItemMovieBinding
 
-class UpcomingMovieAdapter :
+class UpcomingMovieAdapter(val onClickItem: (UpcomingMovie) -> Unit) :
     ListAdapter<UpcomingMovie, UpcomingMovieAdapter.UpcomingMovieViewHolder>(UpcomingMovieDiffUtil()) {
     class UpcomingMovieViewHolder(val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        fun bind() {
 
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpcomingMovieViewHolder {

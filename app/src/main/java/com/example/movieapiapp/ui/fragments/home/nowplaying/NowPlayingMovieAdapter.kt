@@ -10,29 +10,28 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.movieapiapp.R
+import com.example.movieapiapp.databinding.ItemMovieBinding
 
 class NowPlayingMovieAdapter :
     ListAdapter<NowPlayingMovie, NowPlayingMovieAdapter.NowPlayingMovieViewHolder>(
         NowPlayingMovieDiffUtil()
     ) {
-    class NowPlayingMovieViewHolder(private val itemView: View) : ViewHolder(itemView) {
-        val imgMovie: ImageView = itemView.findViewById(R.id.imgMovie)
-        val tvName: TextView = itemView.findViewById(R.id.tvNameMovie)
+    class NowPlayingMovieViewHolder(val binding: ItemMovieBinding) : ViewHolder(binding.root) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NowPlayingMovieViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+        val view = ItemMovieBinding.inflate(LayoutInflater.from(parent.context))
         return NowPlayingMovieViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: NowPlayingMovieViewHolder, position: Int) {
         val currentItem = currentList[position]
         holder.apply {
-            tvName.text = currentItem.title
-            Glide.with(imgMovie.context)
-                .load("https://image.tmdb.org/t/p/w500${currentItem.posterPath}")
+            binding.tvNameMovie.text = currentItem.title
+            Glide.with(holder.itemView)
+                .load("https://image.tmdb.org/t/p/w500/eHu1ZxFPmqyhnait9VdsOQBEFOk.jpg")
                 .centerCrop()
-                .into(imgMovie)
+                .into(holder.binding.imgMovie)
         }
     }
 }
