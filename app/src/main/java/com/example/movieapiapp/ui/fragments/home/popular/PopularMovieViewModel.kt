@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.movieapiapp.ui.data.network.MovieApiService
 import com.example.movieapiapp.ui.data.network.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback

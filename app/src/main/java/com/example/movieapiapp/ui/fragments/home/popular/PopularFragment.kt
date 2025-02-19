@@ -23,8 +23,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class PopularFragment : Fragment() {
     private var recyclerView: RecyclerView? = null
-    private var popularMovieAdapter = PopularMovieAdapter()
-    private var popularMovieViewModel = PopularMovieViewModel()
+    private var popularMovieAdapter: PopularMovieAdapter? = null
+    private var popularMovieViewModel: PopularMovieViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,10 +41,10 @@ class PopularFragment : Fragment() {
         preparePopularMovieRecyclerView()
 
         popularMovieViewModel = ViewModelProvider(this)[PopularMovieViewModel::class.java]
-        popularMovieViewModel.getPopularMovieList()
-        popularMovieViewModel.observePopularMovieLiveData()
-            .observe(viewLifecycleOwner, Observer { popularMovieList ->
-                popularMovieAdapter.submitList(popularMovieList)
+        popularMovieViewModel?.getPopularMovieList()
+        popularMovieViewModel?.observePopularMovieLiveData()
+            ?.observe(viewLifecycleOwner, Observer { popularMovieList ->
+                popularMovieAdapter?.submitList(popularMovieList)
             })
 
     }

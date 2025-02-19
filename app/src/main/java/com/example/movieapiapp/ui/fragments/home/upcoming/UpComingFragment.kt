@@ -5,10 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.movieapiapp.R
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.movieapiapp.databinding.FragmentUpComingBinding
 
 
 class UpComingFragment : Fragment() {
+
+    private lateinit var binding: FragmentUpComingBinding
+    private val upcomingMovieViewModel: UpcomingMovieViewModel by viewModels()
+    private var upcomingMovieAdapter = UpcomingMovieAdapter()
 
 
     override fun onCreateView(
@@ -16,8 +22,32 @@ class UpComingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_up_coming, container, false)
+        binding = FragmentUpComingBinding.inflate(inflater, container, false)
+        return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        prepareRecyclerView()
+
+        upcomingMovieViewModel.getUpcomingMovieList()
+        upcomingMovieViewModel.upcomingMovie
+            .observe(viewLifecycleOwner) { upcomingMovieList ->
+                upcomingMovieAdapter.submitList(upcomingMovieList)
+                binding.rcvUpcoming.adapter = upcomingMovieAdapter
+            }
+    }
+
+    private fun prepareRecyclerView() {
+        upcomingMovieAdapter = UpcomingMovieAdapter()
+        binding.rcvUpcoming.apply {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = upcomingMovieAdapter
+        }
+    }
+
+
 
 
 }

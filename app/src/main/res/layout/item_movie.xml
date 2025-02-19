@@ -7,11 +7,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="150dp"
         android:layout_height="250dp"
+        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingBottom="10dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cvImage"
@@ -32,10 +32,10 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:layout_marginTop="4dp"
             android:id="@+id/tvNameMovie"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="10dp"
             android:text="SoniccccccccccccSonicccccccccccc"
@@ -57,8 +57,6 @@
             app:layout_constraintTop_toTopOf="@id/tvNameMovie" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
