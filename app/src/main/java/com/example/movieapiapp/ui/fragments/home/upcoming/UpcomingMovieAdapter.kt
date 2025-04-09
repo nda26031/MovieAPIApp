@@ -8,34 +8,37 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieapiapp.databinding.ItemMovieBinding
 
-class UpcomingMovieAdapter(val onClickItem: (UpcomingMovie) -> Unit) :
+class UpcomingMovieAdapter(private val onClickMovie: (Long) -> Unit) :
     ListAdapter<UpcomingMovie, UpcomingMovieAdapter.UpcomingMovieViewHolder>(UpcomingMovieDiffUtil()) {
-    class UpcomingMovieViewHolder(val binding: ItemMovieBinding) :
+    class UpcomingMovieViewHolder(
+        private val binding: ItemMovieBinding,
+        private val onClickMovie: (Long) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind() {
+        fun bind(currentItem: UpcomingMovie) {
+            binding.tvNameMovie.text = currentItem.title
+            Glide.with(itemView)
+                .load("https://image.tmdb.org/t/p/w500${currentItem.posterPath}")
+                .into(binding.imgMovie)
 
+            binding.root.setOnClickListener {
+                onClickMovie.invoke(currentItem.id)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpcomingMovieViewHolder {
         val view = ItemMovieBinding.inflate(LayoutInflater.from(parent.context))
-        return UpcomingMovieViewHolder(view)
+        return UpcomingMovieViewHolder(view, onClickMovie)
     }
 
     override fun onBindViewHolder(holder: UpcomingMovieViewHolder, position: Int) {
         val currentItem = currentList[position]
-        holder.apply {
-            binding.tvNameMovie.text = currentItem.title
-            Glide.with(holder.itemView)
-                .load("https://image.tmdb.org/t/p/w500${currentItem.posterPath}")
-                .into(holder.binding.imgMovie)
-        }
+        holder.bind(currentItem)
     }
 
     override fun getItemCount(): Int = currentList.size
-
 }
-
 
 class UpcomingMovieDiffUtil : DiffUtil.ItemCallback<UpcomingMovie>() {
     override fun areItemsTheSame(oldItem: UpcomingMovie, newItem: UpcomingMovie): Boolean {

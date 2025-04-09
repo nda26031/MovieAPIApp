@@ -18,7 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainFragment : Fragment() {
 
-    private var bottomNav: BottomNavigationView ?= null
+    private lateinit var bottomNav: BottomNavigationView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,14 +27,13 @@ class MainFragment : Fragment() {
         // Inflate the layout for this fragment
 
         loadFragment(HomeFragment())
-
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bottomNav = view.findViewById(R.id.bottom_nav)
-        bottomNav?.setOnItemSelectedListener {item ->
+        bottomNav.setOnItemSelectedListener {item ->
             when (item.itemId) {
                 R.id.homeIcon -> {
                     Log.d("TAG", "on click Home")
@@ -67,7 +66,7 @@ class MainFragment : Fragment() {
     }
 
     private fun loadFragment(fragment: Fragment) {
-        val transaction = childFragmentManager.beginTransaction()
+        val transaction = parentFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container_main, fragment)
         transaction.commit()
     }

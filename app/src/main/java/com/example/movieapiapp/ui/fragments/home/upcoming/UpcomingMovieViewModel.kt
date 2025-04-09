@@ -1,42 +1,32 @@
 package com.example.movieapiapp.ui.fragments.home.upcoming
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.movieapiapp.ui.data.network.RetrofitInstance
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
+import androidx.lifecycle.viewModelScope
+import com.example.movieapiapp.ui.data.repository.AppRepository
+import kotlinx.coroutines.launch
 
 class UpcomingMovieViewModel : ViewModel() {
-    private val _upcomingMovie = MutableLiveData<List<UpcomingMovie>>()
-    val upcomingMovie : LiveData<List<UpcomingMovie>> = _upcomingMovie
+    private val _upcomingMovie = MutableLiveData<List<UpcomingMovie>?>()
+    val upcomingMovie: MutableLiveData<List<UpcomingMovie>?> = _upcomingMovie
 
     private val _loading = MutableLiveData<Boolean>()
-    val loading : LiveData<Boolean> = _loading
+    val loading: LiveData<Boolean> = _loading
 
-    fun getUpcomingMovieList() {
-        _loading.value = true
-        RetrofitInstance.api.getUpcomingMovieList("ccea8d7b622a323de74dbfad8ec0a374")
-            .enqueue(object : Callback<UpcomingMovieState> {
-                override fun onResponse(
-                    call: Call<UpcomingMovieState>,
-                    response: Response<UpcomingMovieState>
-                ) {
-                    Log.d("viewModel", "onResponse: ${response.body()}")
-                    if (response.body() != null) {
-                        _upcomingMovie.value = response.body()?.results
-                        _loading.value = false
-                    }
-                }
+    private val repository = AppRepository()
 
-                override fun onFailure(call: Call<UpcomingMovieState>, t: Throwable) {
-                    Log.d("TAG", t.message.toString())
+    init {
+        getUpcomingMovieList()
+    }
 
-                }
-            })
+    private fun getUpcomingMovieList() {
+        viewModelScope.launch {
+            _loading.value = true
+            val movies = repository.getUpcomingMovies()
+            _upcomingMovie.value = movies
+            _loading.value = false
+        }
     }
 
 }

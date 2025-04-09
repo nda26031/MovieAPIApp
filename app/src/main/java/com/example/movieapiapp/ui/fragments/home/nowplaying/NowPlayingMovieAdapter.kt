@@ -1,38 +1,42 @@
 package com.example.movieapiapp.ui.fragments.home.nowplaying
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
-import com.example.movieapiapp.R
 import com.example.movieapiapp.databinding.ItemMovieBinding
 
-class NowPlayingMovieAdapter :
+class NowPlayingMovieAdapter(private val onClickMovie: (Long) -> Unit) :
     ListAdapter<NowPlayingMovie, NowPlayingMovieAdapter.NowPlayingMovieViewHolder>(
         NowPlayingMovieDiffUtil()
     ) {
-    class NowPlayingMovieViewHolder(val binding: ItemMovieBinding) : ViewHolder(binding.root) {
+    class NowPlayingMovieViewHolder(
+        val binding: ItemMovieBinding,
+        private val onClickMovie: (Long) -> Unit
+    ) : ViewHolder(binding.root) {
+        fun bind(currentItem: NowPlayingMovie){
+            binding.tvNameMovie.text = currentItem.title
+            Glide.with(itemView)
+                .load("https://image.tmdb.org/t/p/w500/${currentItem.posterPath}")
+                .centerCrop()
+                .into(binding.imgMovie)
+
+            binding.root.setOnClickListener {
+                onClickMovie.invoke(currentItem.id)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NowPlayingMovieViewHolder {
         val view = ItemMovieBinding.inflate(LayoutInflater.from(parent.context))
-        return NowPlayingMovieViewHolder(view)
+        return NowPlayingMovieViewHolder(view,onClickMovie)
     }
 
     override fun onBindViewHolder(holder: NowPlayingMovieViewHolder, position: Int) {
         val currentItem = currentList[position]
-        holder.apply {
-            binding.tvNameMovie.text = currentItem.title
-            Glide.with(holder.itemView)
-                .load("https://image.tmdb.org/t/p/w500/eHu1ZxFPmqyhnait9VdsOQBEFOk.jpg")
-                .centerCrop()
-                .into(holder.binding.imgMovie)
-        }
+        holder.bind(currentItem)
     }
 }
 

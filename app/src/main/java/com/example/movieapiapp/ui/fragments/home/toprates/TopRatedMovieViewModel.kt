@@ -1,42 +1,33 @@
 package com.example.movieapiapp.ui.fragments.home.toprates
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.movieapiapp.ui.data.network.RetrofitInstance
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.lifecycle.viewModelScope
+import com.example.movieapiapp.ui.data.repository.AppRepository
+import kotlinx.coroutines.launch
 
 class TopRatedMovieViewModel : ViewModel() {
-    private var _topRatedMovie = MutableLiveData<List<TopRatedMovie>>()
-    val topRatedMovie: LiveData<List<TopRatedMovie>> = _topRatedMovie
+    private var _topRatedMovie = MutableLiveData<List<TopRatedMovie>?>()
+    val topRatedMovie: MutableLiveData<List<TopRatedMovie>?> = _topRatedMovie
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    fun getPopularMovies() {
-        _loading.value = true
+    private val repo = AppRepository()
 
-        RetrofitInstance.api.getTopRateMovieList("69d66957eebff9666ea46bd464773cf0")
-            .enqueue(object :
-                Callback<TopRatedMovieState> {
-                override fun onResponse(
-                    call: Call<TopRatedMovieState>,
-                    response: Response<TopRatedMovieState>
-                ) {
-                    if (response.body() != null) {
-                        _topRatedMovie.value = response.body()!!.results
-                        _loading.value = false
+    init {
+        getTopRatedMovieList()
+    }
 
-                    }
-                }
+    private fun getTopRatedMovieList() {
+        viewModelScope.launch {
+            _loading.value = true
+            val movies = repo.getTopRatedMovies()
+            _topRatedMovie.value = movies
+            _loading.value = false
+        }
 
-                override fun onFailure(call: Call<TopRatedMovieState>, t: Throwable) {
-                    Log.d("TAG", t.message.toString())
-                }
-            })
     }
 
 }

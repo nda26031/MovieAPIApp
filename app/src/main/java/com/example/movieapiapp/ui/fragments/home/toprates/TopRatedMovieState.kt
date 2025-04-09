@@ -1,19 +1,17 @@
 package com.example.movieapiapp.ui.fragments.home.toprates
 
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
-import kotlinx.serialization.descriptors.*
-import kotlinx.serialization.encoding.*
+import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class TopRatedMovieState (
     val page: Long,
     val results: List<TopRatedMovie>,
 
-    @SerialName("total_pages")
+    @SerializedName("total_pages")
     val totalPages: Long,
 
-    @SerialName("total_results")
+    @SerializedName("total_results")
     val totalResults: Long
 )
 
@@ -21,35 +19,35 @@ data class TopRatedMovieState (
 data class TopRatedMovie (
     val adult: Boolean,
 
-    @SerialName("backdrop_path")
+    @SerializedName("backdrop_path")
     val backdropPath: String,
 
-    @SerialName("genre_ids")
+    @SerializedName("genre_ids")
     val genreIDS: List<Long>,
 
     val id: Long,
 
-    @SerialName("original_language")
+    @SerializedName("original_language")
     val originalLanguage: String,
 
-    @SerialName("original_title")
+    @SerializedName("original_title")
     val originalTitle: String,
 
     val overview: String,
     val popularity: Double,
 
-    @SerialName("poster_path")
+    @SerializedName("poster_path")
     val posterPath: String,
 
-    @SerialName("release_date")
+    @SerializedName("release_date")
     val releaseDate: String,
 
     val title: String,
     val video: Boolean,
 
-    @SerialName("vote_average")
+    @SerializedName("vote_average")
     val voteAverage: Double,
 
-    @SerialName("vote_count")
+    @SerializedName("vote_count")
     val voteCount: Long
 )

@@ -4,37 +4,38 @@ import com.example.movieapiapp.ui.fragments.home.nowplaying.NowPlayingMovieState
 import com.example.movieapiapp.ui.fragments.home.popular.PopularMovieState
 import com.example.movieapiapp.ui.fragments.home.toprates.TopRatedMovieState
 import com.example.movieapiapp.ui.fragments.home.upcoming.UpcomingMovieState
-import com.example.movieapiapp.ui.fragments.moviedetail.MovieState
+import com.example.movieapiapp.ui.fragments.moviedetail.MovieDetailState
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MovieApiService {
     @GET("movie/popular")
-    fun getPopularMovieList(
+    suspend fun getPopularMovieList(
         @Query("api_key") apiKey: String
-    ): Call<PopularMovieState>
+    ): Response<PopularMovieState>
 
     @GET("movie/upcoming")
-    fun getUpcomingMovieList(
+    suspend fun getUpcomingMovieList(
         @Query("api_key") apiKey: String
-    ): Call<UpcomingMovieState>
+    ): Response<UpcomingMovieState>
 
     @GET("movie/now_playing")
-    fun getPlayingMovieList(
+    suspend fun getPlayingMovieList(
         @Query("api_key") apiKey: String
-    ): Call<NowPlayingMovieState>
+    ): Response<NowPlayingMovieState>
 
-    @GET("movie/now_playing")
-    fun getTopRateMovieList(
+    @GET("movie/top_rated")
+    suspend fun getTopRateMovieList(
         @Query("api_key") apiKey: String
-    ): Call<TopRatedMovieState>
+    ): Response<TopRatedMovieState>
 
     @GET("movie/{movie_id}")
-    fun getMovieDetail(
+    suspend fun getMovieDetail(
         @Path("movie_id") movieId: Long,
         @Query("api_key") apiKey: String
-    ): Call<MovieState>
+    ): Response<MovieDetailState>
 
 }

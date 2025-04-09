@@ -28,7 +28,6 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SEARCH"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -51,7 +50,6 @@
             android:layout_height="250dp"
             android:contentDescription="image movie"
             android:scaleType="centerCrop"
-            android:src="@drawable/city"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,7 +63,6 @@
                 android:id="@+id/tvSubTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="The Glory"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +80,6 @@
                 android:id="@+id/tvReleaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2025"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvSubTitle" />
@@ -93,7 +89,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="2025"
                 android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/tvReleaseDate"
                 app:layout_constraintTop_toBottomOf="@+id/tvSubTitle" />
@@ -103,7 +98,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="2025"
                 android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/tvLanguage"
                 app:layout_constraintTop_toBottomOf="@+id/tvSubTitle" />
@@ -112,7 +106,6 @@
                 android:id="@+id/tvOverview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="asdasdasd asdasdasd asdasdasdasdasdasd asdasdasd asdasdasd asdasdasdasdasdasd asdasdasd asdasdasd asdasdasdasdasdasd asdasdasd asdasdasd asdasdasdasdasdasd asdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasdasdasdasd asdasdasd asdasdasdasdasdasd"
                 android:textSize="13sp"
                 app:layout_constraintTop_toBottomOf="@+id/tvReleaseDate" />
 
@@ -121,5 +114,14 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
